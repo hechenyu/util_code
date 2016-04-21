@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int main()//取得网络设备列表
+int main()//鍙栧緱缃戠粶璁惧鍒楄〃
 {
 	pcap_if_t *alldevs;
 	pcap_if_t *d;
 	int i=0;
 	char errbuf[PCAP_ERRBUF_SIZE];
-	//取得网络设备列表
+	//鍙栧緱缃戠粶璁惧鍒楄〃
 	if(pcap_findalldevs(&alldevs,errbuf)==-1)
 	{
 		fprintf(stderr,"Error in pcap_findalldevs:%s\n",errbuf);
 		exit(1);
 	}
-	//显示网络设备列表
+	//鏄剧ず缃戠粶璁惧鍒楄〃
 	for(d=alldevs;d;d=d->next)
 	{
 		printf("%d",++i);
