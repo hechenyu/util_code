@@ -1,5 +1,4 @@
 /*
- *  $Id: sendarp.cpp,v 1.1 2015/08/17 17:38:39 hexu Exp $
  *
  *  libnet 1.1
  *  Build an ARP packet
