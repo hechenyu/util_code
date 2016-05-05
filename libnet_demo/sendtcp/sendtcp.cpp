@@ -1,5 +1,4 @@
 /*
- *  $Id: sendtcp.cpp,v 1.1 2015/08/17 11:58:47 hexu Exp $
  *
  *  libnet 1.1
  *  Build a TCP packet
@@ -143,9 +142,9 @@ int main(int argc, char *argv[])
 			TH_SYN,                                     /* control flags */
 			32767,                                      /* window size */
 			0,                                          /* checksum */
-			10,                                          /* urgent pointer */
+			10,                                         /* urgent pointer */
 			LIBNET_TCP_H + 20 + payload_s,              /* TCP packet size */
-			(uint8_t*)payload,                         /* payload */
+			(uint8_t*)payload,                          /* payload */
 			payload_s,                                  /* payload size */
 			l,                                          /* libnet handle */
 			0);                                         /* libnet id */
