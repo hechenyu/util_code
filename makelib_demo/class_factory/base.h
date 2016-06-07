@@ -5,16 +5,16 @@
 
 class Base {
 public:
-	// ¹¹Ôìº¯Êı
+	// æ„é€ å‡½æ•°
 	Base();
 
-	// Îö¹¹º¯Êı
+	// ææ„å‡½æ•°
 	virtual ~Base() = 0;
 
-	// ³ÉÔ±º¯Êı1
+	// æˆå‘˜å‡½æ•°1
 	virtual int foo(const std::string &) = 0;
 
-	// ³ÉÔ±º¯Êı2
+	// æˆå‘˜å‡½æ•°2
 	virtual void print() = 0;
 };
 
