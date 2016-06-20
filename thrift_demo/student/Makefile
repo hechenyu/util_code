@@ -7,12 +7,12 @@ CXX = g++
 VPATH = ./gen-cpp
 CXXFLAGS = --std=c++98 -Wall -g -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H
 INCLUDE = -I./gen-cpp
-LDFLAGS = -lthrift
+LDFLAGS = -lthriftnb -levent -lthrift -lrt
 LDPATH = -L/usr/local/lib
 
-OBJS = echo_constants.o echo_types.o EchoTest.o
+OBJS = student_constants.o student_types.o Serv.o
 
-PROGS = client server 
+PROGS = thrift client server 
 
 .PHONY: all
 all: $(PROGS)
@@ -24,7 +24,7 @@ clean:
 	@echo "clean OK!"
 
 .PHONY: thrift
-thrift: echo.thrift
+thrift: student.thrift
 	thrift --gen cpp $<
 
 .PHONY: distclean
