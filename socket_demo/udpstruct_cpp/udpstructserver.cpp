@@ -97,11 +97,14 @@ int main(int argc, char *argv[])
 			<< inet_ntoa(cliaddr.sin_addr) << ", "
 			<< ntohs(cliaddr.sin_port) << ")" 
 			<< endl;
+        req.v1 = ntohs(req.v1);
+        req.v3 = ntohs(req.v3);
 		cout << "content: (" 
 			<< (int) req.v1 << ", " 
 			<< (int) req.v2 << ", " 
-			<< (int) ntohs(req.v3) << ")" << endl;
-		resp.ret = req.v1;
+			<< (int) req.v3 << ")" << endl;
+		resp.ret = req.v1 + req.v2 + req.v3;
+        resp.ret = htons(resp.ret);
 		Sendto(sockfd, &resp, sizeof(resp), 0, 
 				(struct sockaddr *) &cliaddr, len);
 	}

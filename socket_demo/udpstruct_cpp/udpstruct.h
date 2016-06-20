@@ -2,13 +2,13 @@
 #define	UDPSTRUCT_H
 
 struct Request {
-	uint8_t v1;
+	uint16_t v1;
 	uint8_t v2;
 	uint16_t v3;
-};
+} __attribute__ ((__packed__));
 
 struct Response {
-	uint8_t ret;
-};
+	uint16_t ret;
+} __attribute__ ((__packed__));
 
 #endif

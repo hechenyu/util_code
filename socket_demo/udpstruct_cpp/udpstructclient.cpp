@@ -90,12 +90,14 @@ int main(int argc, char *argv[])
 		cout << "entry v1 v2 v3: " << endl;
 		cin >> v1 >> v2 >> v3;
 		req.v1 = v1; req.v2 = v2; req.v3 = v3;
+        req.v1 = htons(req.v1);
 		req.v3 = htons(req.v3);
 		Sendto(sockfd, &req, sizeof(req), 0, 
 				(struct sockaddr *) &servaddr, sizeof (servaddr));
 		int n = Recvfrom(sockfd, &resp, sizeof(resp), 0, NULL, NULL);
 		if (n == 0)
 			break;
+        resp.ret = ntohs(resp.ret);
 		cout << "Received: " << (int) resp.ret << endl;
 	}
 
