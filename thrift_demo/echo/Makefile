@@ -5,7 +5,7 @@ RM = rm -f
 CXX = g++
 
 VPATH = ./gen-cpp
-CXXFLAGS = --std=c++98 -Wall -g -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H
+CXXFLAGS = -Wall -g -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H
 INCLUDE = -I./gen-cpp
 LDFLAGS = -lthrift
 LDPATH = -L/usr/local/lib

@@ -11,7 +11,7 @@ using boost::shared_ptr;
 
 int main()
 {
-	boost::shared_ptr<TSocket> socket(new TSocket("localhost", 9090));
+	boost::shared_ptr<TSocket> socket(new TSocket("192.168.1.98", 9090));
 	
 	//对接nonblockingServer时必须的，对普通server端时用boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
 	boost::shared_ptr<TTransport> transport(new TFramedTransport(socket)); 
