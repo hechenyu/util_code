@@ -1,18 +1,19 @@
 #include <string>
 #include <iostream>
-#include "slist.h"
+#include "dlist.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    typedef Slist<string> List;
-    typedef Slist_node<string> Node;
+    typedef Dlist<string> List;
+    typedef Dlist_node<string> Node;
 
     List list;
     list_init(list);
     for (int i = 1; i < argc; i++) {
         list_insert_front(list, list_new_node(string(argv[i])));
+        list_insert_back(list, list_new_node(string(argv[i])));
     }
 
     if (list_empty(list)) {
@@ -27,25 +28,26 @@ int main(int argc, char *argv[])
     string val;
     cin >> val;
     auto x = list_search(list, val);
-    if (x != nullptr) {
+    if (x != &list.nil) {
         cout << "found it!" << endl;
-		auto y = static_cast<Node *>(x->next);
-		if (y != nullptr) {
-			cout << "next val is: " << y->value << endl;
-			list_remove_next(x);
-        	list_free_node(y);
-		}
-		auto t = list_new_node(static_cast<Node *>(x)->value);
-		list_insert_next(x, t);
+		auto t = list_new_node(std::string("fake"));
+		list_insert(x, t);
+		list_remove(x);
     } else {
         cout << "not found!" << endl;
     }
 
     cout << "free list: ";
+	int i = 0;
     while (!list_empty(list)) {
-		auto node = list_remove_front(list);
+		Node *node = nullptr;
+		if (i++ % 2) {
+			node = list_remove_front(list);
+		} else {
+			node = list_remove_back(list);
+		}
 		cout << node->value << ", ";
-        list_free_node(node);
+       	list_free_node(node);
     }
 	cout << endl;
 

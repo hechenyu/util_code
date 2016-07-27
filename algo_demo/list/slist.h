@@ -10,14 +10,22 @@
 typedef struct Slist_node_base *Slist_link;
 
 struct Slist_node_base {
-    Slist_link next = nullptr;
+    Slist_link next;
 };
 
 struct Slist_base {
     Slist_node_base head;
 };
 
+// 初始化链表
+inline
+void list_init(Slist_base &list)
+{
+    list.head.next = nullptr;
+}
+
 // 判断list是否为空, 
+inline
 bool list_empty(const Slist_base &list)
 {
 	return (list.head.next == nullptr);
@@ -77,9 +85,7 @@ inline
 void list_remove_next(Slist_link x)
 {
 	auto t = x->next;
-	if (t != nullptr) {
-		x->next = t->next;
-	}
+	x->next = t->next;
 }
 
 template <typename T>
