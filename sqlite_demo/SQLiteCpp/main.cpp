@@ -35,9 +35,8 @@ void assertion_failed(const char* apFile, const long apLine, const char* apFunc,
 /// Get example path
 static inline std::string getExamplePath()
 {
-//    std::string filePath(__FILE__);
-//    return filePath.substr( 0, filePath.length() - std::string("main.cpp").length());
-    return ".";
+    std::string filePath(__FILE__);
+    return filePath.substr( 0, filePath.length() - std::string("main.cpp").length());
 }
 
 /// Example Database
@@ -85,7 +84,9 @@ private:
 
 int main ()
 {
-    std::cout << "SQlite3 version " << SQLITE_VERSION << std::endl;
+    // Using SQLITE_VERSION would require #include <sqlite3.h> which we want to avoid: use SQLite::VERSION if possible.
+//  std::cout << "SQlite3 version " << SQLITE_VERSION << std::endl;
+    std::cout << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")" << std::endl;
     std::cout << "SQliteC++ version " << SQLITECPP_VERSION << std::endl;
 
     ////////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ int main ()
     try
     {
         // Open a database file in readonly mode
-        SQLite::Database    db(filename_example_db3);  // SQLITE_OPEN_READONLY
+        SQLite::Database    db(filename_example_db3);  // SQLite::OPEN_READONLY
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         // Test if the 'test' table exists
@@ -115,7 +116,7 @@ int main ()
     try
     {
         // Open a database file in readonly mode
-        SQLite::Database    db(filename_example_db3);  // SQLITE_OPEN_READONLY
+        SQLite::Database    db(filename_example_db3);  // SQLite::OPEN_READONLY
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         ///// a) Loop to get values of column by index, using auto cast to variable type
@@ -231,7 +232,7 @@ int main ()
     try
     {
         // Open a database file in readonly mode
-        SQLite::Database    db(filename_example_db3);  // SQLITE_OPEN_READONLY
+        SQLite::Database    db(filename_example_db3);  // SQLite::OPEN_READONLY
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         // WARNING: Be very careful with this dangerous method: you have to
@@ -251,7 +252,7 @@ int main ()
     try
     {
         // Open a database file in create/write mode
-        SQLite::Database    db("test.db3", SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE);
+        SQLite::Database    db("test.db3", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         // Create a new table with an explicit "id" column aliasing the underlying rowid
@@ -292,7 +293,7 @@ int main ()
     try
     {
         // Open a database file in create/write mode
-        SQLite::Database    db("transaction.db3", SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE);
+        SQLite::Database    db("transaction.db3", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         db.exec("DROP TABLE IF EXISTS test");
@@ -360,7 +361,7 @@ int main ()
     try
     {
         // Open a database file in create/write mode
-        SQLite::Database    db(":memory:", SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE);
+        SQLite::Database    db(":memory:", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
         std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
 
         db.exec("DROP TABLE IF EXISTS test");
@@ -429,7 +430,7 @@ int main ()
     try
     {
         // Open a database file in create/write mode
-        SQLite::Database db(":memory:", SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
+        SQLite::Database db(":memory:", SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
 
         db.exec("DROP TABLE IF EXISTS test");
         db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)");
