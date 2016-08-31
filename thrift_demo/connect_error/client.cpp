@@ -33,6 +33,19 @@ using namespace apache::thrift::transport;
 
 using namespace demo;
 
+void print_time_now()
+{
+  time_t now = time(0);
+  cerr << "time: " << ctime(&now);
+}
+
+void my_pause()
+{
+  cerr << "pause, entry \\n to continue\n";
+  string str;
+  getline(cin, str);
+}
+
 int main(int argc, char** argv) {
   string host = "localhost";
   int port = 9090;
@@ -51,20 +64,37 @@ int main(int argc, char** argv) {
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
   EchoTestClient client(protocol);
 
-  try {
-    transport->open();
+  int max_try_times = 3;
+  int origin_timeout = 2000;
+  int rate = 2;
+  int i;
+  print_time_now();
+  for (i = 0; i < max_try_times; i++) {
+    try {
+      socket->setConnTimeout(origin_timeout);
+      transport->open();
+      break;
+    } catch (const TTransportException &e) {
+      cerr << "ERROR: type(" << e.getType() << "), errno(" << errno << "), what(" << e.what() << ")\n";
+      origin_timeout *= rate;
+      transport->close();
 
+      my_pause();
+    }
+  }
+
+  try {
     string str;
     string ret_str;
     while (getline(cin, str)) {
-      client.echo(ret_str, str);
-      cerr << ret_str << "\n";
+        client.echo(ret_str, str);
+        cerr << ret_str << "\n";
     }
-
-    transport->close();
-  } catch (TException &tx) {
-    cerr << "ERROR: " << tx.what() << "\n";
+  } catch (const TTransportException &e) {
+    cerr << "ERROR: type(" << e.getType() << "), errno(" << errno << "), what(" << e.what() << ")\n";
   }
+
+  transport->close();
 
   return 0;
 }
