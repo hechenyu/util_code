@@ -7,6 +7,7 @@
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <iostream>
+#include <string>
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -17,6 +18,15 @@ using boost::shared_ptr;
 
 using namespace  ::demo;
 
+bool g_pause_flag = false;
+
+void my_pause()
+{
+  std::cerr << "pause, entry \\n to continue\n";
+  std::string str;
+  std::getline(std::cin, str);
+}
+
 class EchoTestHandler : virtual public EchoTestIf {
  public:
   EchoTestHandler() {
@@ -26,6 +36,8 @@ class EchoTestHandler : virtual public EchoTestIf {
   void echo(std::string& _return, const std::string& str) {
     // Your implementation goes here
     std::cerr << "echo " << str << "\n";
+    if (g_pause_flag)
+      my_pause();
     _return = str;
   }
 
@@ -35,9 +47,13 @@ int main(int argc, char **argv) {
 
   int port = 9090;
 
-  if (argc == 2) {
-    int tmp = atoi(argv[1]);
-    if (tmp != 0) port = tmp;
+  for (int i = 1; i < argc; i++) {
+    if (argv[i][0] == '-' && argv[i][1] == 'x') {
+      g_pause_flag = true;
+    } else {
+      int tmp = atoi(argv[1]);
+      if (tmp != 0) port = tmp;
+    }
   }
 
   shared_ptr<EchoTestHandler> handler(new EchoTestHandler());

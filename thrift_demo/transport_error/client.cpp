@@ -80,18 +80,19 @@ int main(int argc, char** argv) {
       transport->close();
 
       my_pause();
+      print_time_now();
     }
   }
 
-  try {
-    string str;
-    string ret_str;
-    while (getline(cin, str)) {
-        client.echo(ret_str, str);
-        cerr << ret_str << "\n";
+  string str;
+  string ret_str;
+  while (getline(cin, str)) {
+    try {
+      client.echo(ret_str, str);
+      cerr << ret_str << "\n";
+    } catch (const TTransportException &e) {
+      cerr << "ERROR: type(" << e.getType() << "), errno(" << errno << "), what(" << e.what() << ")\n";
     }
-  } catch (const TTransportException &e) {
-    cerr << "ERROR: type(" << e.getType() << "), errno(" << errno << "), what(" << e.what() << ")\n";
   }
 
   transport->close();
