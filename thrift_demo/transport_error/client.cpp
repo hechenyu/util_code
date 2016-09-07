@@ -77,13 +77,15 @@ int main(int argc, char** argv) {
     } catch (const TTransportException &e) {
       cerr << "ERROR: type(" << e.getType() << "), errno(" << errno << "), what(" << e.what() << ")\n";
       origin_timeout *= rate;
-      transport->close();
 
       my_pause();
       print_time_now();
     }
   }
 
+  socket->setRecvTimeout(10000);
+  socket->setSendTimeout(10000);
+	
   string str;
   string ret_str;
   while (getline(cin, str)) {
