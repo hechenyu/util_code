@@ -83,6 +83,11 @@ int main(int argc, char** argv) {
     }
   }
 
+  if (i == max_try_times) {
+      cerr << "connect error\n";
+      exit(1);
+  }
+
   socket->setRecvTimeout(10000);
   socket->setSendTimeout(10000);
 	
