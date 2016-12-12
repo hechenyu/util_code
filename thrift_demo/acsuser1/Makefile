@@ -7,12 +7,12 @@ CXX = g++
 VPATH = ./gen-cpp
 CXXFLAGS = -Wall -g -DDEBUG -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H
 INCLUDE = -I./gen-cpp
-LDFLAGS = -lthrift
+LDFLAGS = -lthrift -lrt
 LDPATH = -L/usr/local/lib
 
-OBJS = echo_constants.o echo_types.o EchoTest.o
+OBJS = acsuser_constants.o acsuser_types.o UserService.o
 
-PROGS = client server client_catch server_throw
+PROGS = UserClient UserServer 
 
 .PHONY: all
 all: $(PROGS)
@@ -24,29 +24,24 @@ clean:
 	@echo "clean OK!"
 
 .PHONY: thrift
-thrift: echo.thrift
+thrift: acsuser.thrift
 	thrift --gen cpp $<
+	thrift --gen py $<
 
 .PHONY: distclean
 distclean: thrift-clean clean 
 
 .PHONY: thrift-clean
 thrift-clean:
-	$(RMR) ./gen-cpp
+	$(RMR) ./gen-cpp ./gen-py
 
 %.o:%.cpp
 	$(CXX) -o $@ -c $< $(CXXFLAGS) $(INCLUDE)
 
-client: client.o $(OBJS)
+UserClient: UserClient.o $(OBJS)
 	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
 
-server: server.o $(OBJS)
-	@$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
-
-client_catch: client_catch.o $(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
-
-server_throw: server_throw.o $(OBJS)
+UserServer: UserServer.o $(OBJS)
 	@$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
 
 

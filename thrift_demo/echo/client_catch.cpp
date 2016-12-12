@@ -51,16 +51,20 @@ int main(int argc, char** argv) {
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
   EchoTestClient client(protocol);
 
-  transport->open();
+  try {
+    transport->open();
 
-  string str;
-  string ret_str;
-  while (getline(cin, str)) {
-    client.echo(ret_str, str);
-    cerr << ret_str << "\n";
+    string str;
+    string ret_str;
+    while (getline(cin, str)) {
+      client.echo(ret_str, str);
+      cerr << ret_str << "\n";
+    }
+
+    transport->close();
+  } catch (TException &tx) {
+    cerr << "ERROR: " << tx.what() << "\n";
   }
-
-  transport->close();
 
   return 0;
 }
