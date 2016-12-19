@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sqlite3.h>
+#include "open_db.h"
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
    int i;
@@ -19,13 +20,7 @@ int main(int argc, char* argv[])
    char *sql;
 
    /* Open database */
-   rc = sqlite3_open("test.db", &db);
-   if( rc ){
-      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-      exit(0);
-   }else{
-      fprintf(stderr, "Opened database successfully\n");
-   }
+   db = open_db(argc, argv);
 
    /* Create SQL statement */
    sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "  \

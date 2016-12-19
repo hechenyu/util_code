@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sqlite3.h> 
+#include "open_db.h"
 
 static int callback(void *data, int argc, char **argv, char **azColName){
    int i;
@@ -21,13 +22,7 @@ int main(int argc, char* argv[])
    const char* data = "Callback function called";
 
    /* Open database */
-   rc = sqlite3_open("test.db", &db);
-   if( rc ){
-      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-      exit(0);
-   }else{
-      fprintf(stderr, "Opened database successfully\n");
-   }
+   db = open_db(argc, argv);
 
    /* Create merged SQL statement */
    sql = "DELETE from COMPANY where ID=2; " \
