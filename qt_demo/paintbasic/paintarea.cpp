@@ -83,9 +83,14 @@ void drawArrowLine(QPainter &painter, const QPoint &p1, const QPoint &p2) // fro
     clog << "pb: (" << pb.x() << ", " << pb.y() << ")\n";
     clog << "pc: (" << pc.x() << ", " << pc.y() << ")\n";
 
-    painter.drawLine(pa, pb);
-    painter.drawLine(pb, pc);
-    painter.drawLine(pc, pa);
+    QPoint points[3];
+    points[0] = pa;
+    points[1] = pb;
+    points[2] = pc;
+    painter.drawPolygon(points, 3);
+//    painter.drawLine(pa, pb);
+//    painter.drawLine(pb, pc);
+//    painter.drawLine(pc, pa);
 }
 
 void PaintArea::paintEvent(QPaintEvent *)
@@ -111,7 +116,6 @@ void PaintArea::paintEvent(QPaintEvent *)
     path.moveTo(100,100);
     path.cubicTo(300,100,200,200,300,300);
     path.cubicTo(100,300,200,200,100,100);
-    
     
     switch(shape)
     {
