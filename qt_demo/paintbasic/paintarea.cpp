@@ -35,17 +35,23 @@ void PaintArea::setBrush(QBrush b)
 
 void drawArrowLine(QPainter &painter, const QPoint &p1, const QPoint &p2) // from p1 to p2
 {
+    ofstream clog("/tmp/log.txt");
+    clog << "p1: (" << p1.x() << ", " << p1.y() << ")\n";
+    clog << "p2: (" << p2.x() << ", " << p2.y() << ")\n";
+
     painter.drawLine(p1, p2);
     if (p1 == p2)
         return;
 
-    ofstream clog("/tmp/log.txt");
     QPoint pm((p1.x()+p2.x())/2, (p1.y()+p2.y())/2); // p1和p2的中点
     clog << "pm: (" << pm.x() << ", " << pm.y() << ")\n";
     int width = 10;     // 箭头宽度
     int length = 12;    // 箭头长度
     QPoint pa, pb, pc;  // pa为箭头顶点, pb, pc为两边的顶点
     if (p1.x() == p2.x()) { // k1为无穷, k2为0
+        if (p1.y() < p2.y()) {
+        } else {
+        }
     } else if (p1.y() == p2.y()){ // k1为0, k2为无穷
     } else { 
         double k1 = ((double) (p2.y() - p1.y())) / ((double) (p2.x() - p1.x())); // p1->p2的斜率
@@ -53,16 +59,14 @@ void drawArrowLine(QPainter &painter, const QPoint &p1, const QPoint &p2) // fro
         clog << "k1: " << k1 << ", k2: " << k2 << '\n';
         double sin1, cos1, sin2, cos2;
         // k = tan, cos = +-sqrt(1/(1+k*k)), sin = +-sqrt(k*k/(1+k*k));
-        if (k1 > 0) {   // k1 > 0, k2 < 0
-            cos1 = sqrt(1 / (1 + k1*k1));
-            sin1 = sqrt((k1 * k1) / (1 + k1*k1));
-            cos2 = sqrt(1 / (1 + k2*k2));
-            sin2 = -sqrt((k2 * k2) / (1 + k2*k2));
-        } else {    // k1 < 0, k2 > 0
-            cos1 = sqrt(1 / (1 + k1*k1));
-            sin1 = -sqrt((k1 * k1) / (1 + k1*k1));
+        cos1 = sqrt(1 / (1 + k1*k1));
+        sin1 = sqrt((k1 * k1) / (1 + k1*k1));
+        if (k2 > 0) {   // k2 > 0
             cos2 = sqrt(1 / (1 + k2*k2));
             sin2 = sqrt((k2 * k2) / (1 + k2*k2));
+        } else {        // k2 < 0
+            cos2 = sqrt(1 / (1 + k2*k2));
+            sin2 = -sqrt((k2 * k2) / (1 + k2*k2));
         }
         clog << "cos1: " << cos1 << ", sin1: " << sin1 << '\n';
         clog << "cos2: " << cos2 << ", sin2: " << sin2 << '\n';
@@ -79,7 +83,7 @@ void drawArrowLine(QPainter &painter, const QPoint &p1, const QPoint &p2) // fro
         pb.setX(cos2*width/2+pm.x());
         pb.setY(sin2*width/2+pm.y());   // (pb.y - pm.y) / (width/2) = sin2
         pc.setX(-cos2*width/2+pm.x());
-        pc.setY(-sin2*width/2+pm.y());
+        pc.setY(-sin2*width/2+pm.y());  // (pm.y - pc.y) / (width/2) = sin2
     }
     clog << "pa: (" << pa.x() << ", " << pa.y() << ")\n";
     clog << "pb: (" << pb.x() << ", " << pb.y() << ")\n";
@@ -117,11 +121,8 @@ void PaintArea::paintEvent(QPaintEvent *)
     switch(shape)
     {
     case Line:
-        {
-//        p.drawLine(rect.topLeft(),rect.bottomRight());
-        drawArrowLine(p, rect.topLeft(),rect.bottomRight());
+        p.drawLine(rect.topLeft(),rect.bottomRight());
         break;
-        }
     case Rectangle:
         p.drawRect(rect);
         break;
@@ -151,6 +152,16 @@ void PaintArea::paintEvent(QPaintEvent *)
         break;
     case Pixmap:
         p.drawPixmap(150,150,QPixmap(":/images/butterfly.png"));
+        break;
+    case ArrowLine:
+        drawArrowLine(p, QPoint(0,0), QPoint(100, 100));
+        drawArrowLine(p, QPoint(200,200), QPoint(100, 100));
+        drawArrowLine(p, QPoint(0,200), QPoint(100, 100));
+        drawArrowLine(p, QPoint(200,0), QPoint(100, 100));
+        drawArrowLine(p, QPoint(0,100), QPoint(100, 100));
+        drawArrowLine(p, QPoint(200,100), QPoint(100, 100));
+        drawArrowLine(p, QPoint(100,0), QPoint(100, 100));
+        drawArrowLine(p, QPoint(100,200), QPoint(100, 100));
         break;
     default:
     	break;

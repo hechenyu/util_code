@@ -25,6 +25,7 @@ MainWidget::MainWidget(QWidget *parent)
     QLabel *label7 = new QLabel(tr("Brush:"));
 
     shapeComboBox = new QComboBox;
+    shapeComboBox->addItem(tr("ArrowLine"), (int) PaintArea::ArrowLine);
     shapeComboBox->addItem(tr("Line"), (int) PaintArea::Line);
     shapeComboBox->addItem(tr("Polygon"), (int) PaintArea::Polygon);
     shapeComboBox->addItem(tr("Rectangle"), (int) PaintArea::Rectangle);
