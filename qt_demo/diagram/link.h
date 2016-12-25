@@ -19,6 +19,8 @@ public:
 
     void trackNodes();
 
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option, QWidget *widget);
 private:
     Node *myFromNode;
     Node *myToNode;
