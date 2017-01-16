@@ -10,12 +10,16 @@ sqlite3 *open_db(int argc, char* argv[])
 	int opt;
     std::string skey;
     std::string rkey;
+    bool skey_flag = false;
+    bool rkey_flag = false;
 	while ((opt = getopt(argc, argv, "hs:r:")) != -1) {
 		switch (opt) {
 			case 's':
+                skey_flag = true;
                 skey = optarg;
 				break;
 			case 'r':
+                rkey_flag = true;
                 rkey = optarg;
 				break;
             case 'h':
@@ -41,7 +45,7 @@ sqlite3 *open_db(int argc, char* argv[])
         fprintf(stderr, "sqlite3_open ok\n");
     }
 
-    if (!skey.empty()) {
+    if (skey_flag) {
         rc = sqlite3_key(db, skey.c_str(), skey.length());
         if (rc != SQLITE_OK) {
             fprintf(stderr, "sqlite3_key fail: %s\n", sqlite3_errmsg(db));
@@ -51,7 +55,7 @@ sqlite3 *open_db(int argc, char* argv[])
         }
     }
 
-    if (!rkey.empty()) {
+    if (rkey_flag) {
         rc = sqlite3_rekey(db, rkey.c_str(), rkey.length());
         if (rc != SQLITE_OK) {
             fprintf(stderr, "sqlite3_rekey fail: %s\n", sqlite3_errmsg(db));
