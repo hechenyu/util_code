@@ -1,13 +1,13 @@
+#include "slist.h"
 #include <string>
 #include <iostream>
-#include "slist.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    typedef Slist<string> List;
-    typedef Slist_node<string> Node;
+    typedef SList<string> List;
+    typedef SList_node<string> Node;
 
     List list;
     list_init(list);
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
         list_insert_front(list, list_new_node(string(argv[i])));
     }
 
-    if (list_empty(list)) {
+    if (list_is_empty(list)) {
         cout << "list is empty!" << endl;
     } else {
         cout << "list: [";
@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
     string val;
     cin >> val;
     auto x = list_search(list, val);
-    if (x != nullptr) {
+    if (x != NULL) {
         cout << "found it!" << endl;
 		auto y = static_cast<Node *>(x->next);
-		if (y != nullptr) {
+		if (y != NULL) {
 			cout << "next val is: " << y->value << endl;
-			list_remove_next(x);
+			list_delete_next(x);
         	list_free_node(y);
 		}
 		auto t = list_new_node(static_cast<Node *>(x)->value);
@@ -42,15 +42,15 @@ int main(int argc, char *argv[])
     }
 
     cout << "free list: ";
-    while (!list_empty(list)) {
-		auto node = list_remove_front(list);
+    while (!list_is_empty(list)) {
+		auto node = list_delete_front(list);
 		cout << node->value << ", ";
         list_free_node(node);
     }
 	cout << endl;
 
     cout << "after free list" << endl;
-    if (list_empty(list)) {
+    if (list_is_empty(list)) {
         cout << "list is empty!" << endl;
     } else {
         cout << "list is not empty!" << endl;
