@@ -14,5 +14,6 @@ struct UserQuery {
 service UserService {
     void add(1: User u),  
     User get(1: UserQuery qry),  
+    void add_v2(1: User u), 
 } 
 
