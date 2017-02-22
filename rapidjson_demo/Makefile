@@ -2,12 +2,12 @@
 
 RM = rm -f
 CXX = g++
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -std=c++11
 INCLUDE = -I./rapidjson/include
 LDFLAGS = 
 LDPATH = 
 
-PROGS =	tutorial array read_write read write
+PROGS =	tutorial array read_write read write map2json json2map
 
 .PHONY: all
 all: $(PROGS)
@@ -33,5 +33,11 @@ read: read.o
 	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
 
 write: write.o
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
+
+map2json: map2json.o
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
+
+json2map: json2map.o
 	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
 
