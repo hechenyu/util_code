@@ -9,7 +9,7 @@ echo $git_dir_list
 
 for dir in $git_dir_list
 do
-    (cd $dir && pwd && git pull)
+    (cd $dir && pwd && git fetch --all)
     echo "xxx:" 
     pwd
     echo "yyy:"
