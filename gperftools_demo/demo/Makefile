@@ -14,7 +14,7 @@ all: $(PROGS)
 	@echo "build OK!"
 
 clean:
-	@$(RM) $(PROGS) *.o *.prof *.txt *.pdf
+	@$(RM) $(PROGS) *.o *.prof *.pdf
 	@echo "clean OK!"
 
 %.o:%.cpp
@@ -27,7 +27,7 @@ demo.prof: demo
 	./demo
 
 pprof-text: demo demo.prof
-	pprof --text demo demo.prof > demo.txt
+	pprof --text demo demo.prof
 
 pprof-pdf: demo demo.prof
 	pprof --pdf demo demo.prof > demo.pdf
