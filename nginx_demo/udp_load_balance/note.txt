@@ -1,0 +1,6 @@
+1) 将nginx.conf中的内容追加到系统的nginx配置文件中, 重新加载nginx配置文件
+2) 启动udp echo server 
+# ./udpechoserver.py '' 19999
+# ./udpechoserver.py '' 29999
+3) 启动udp echo client
+# ./udpechoclient.py '127.0.0.1' 9999
