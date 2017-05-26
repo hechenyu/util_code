@@ -4,3 +4,5 @@
 # ./udpechoserver.py '' 29999
 3) 启动udp echo client
 # ./udpechoclient.py '127.0.0.1' 9999
+4) 如果是采用源代码编译nginx, 需要加上"--with-stream"参数
+# ./configure --with-stream
