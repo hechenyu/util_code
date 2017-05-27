@@ -20,7 +20,7 @@ except ValueError:
 s.connect((host, port))
 print "Looking for replies; press Ctrl-C or Ctrl-Break to stop."
 while 1:
-    data = sys.stdin.readline()
+    data = sys.stdin.readline().strip()
     if not len(data):
         break
     s.sendall(data)
