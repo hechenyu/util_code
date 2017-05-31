@@ -1,0 +1,5 @@
+1) 自定义hash key的udp负载均衡方案:
+a. add_module
+b. add_variables
+c. udp_load_balance
+b. udp_upstreams_hash 
