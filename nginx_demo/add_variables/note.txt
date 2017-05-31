@@ -2,5 +2,6 @@
 1) 将ngx_stream_variable.c追加到nginx的src/ngx_stream_variable.c中
 2) 将nginx.conf中的内容追加到nginx的conf/nginx.conf中
 3) 重新编译并运行nginx
+# ./configure --with-stream --with-debug && make
 4) 用udp_load_balance的测试方法测试
 5) 查看nignx的logs/stream.log
