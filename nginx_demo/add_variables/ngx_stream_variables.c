@@ -32,31 +32,19 @@ ngx_stream_variable_front4bytes(ngx_stream_session_t *s,
     ngx_stream_variable_value_t *v, uintptr_t data)
 {
     ngx_str_t  str;
-    const u_char null[4] = {'N', 'U', 'L', 'L'};
 
-    str.len = 4;
+    int len = (char *) s->connection->buffer->last - (char *) s->connection->buffer->pos;
+
+    printf("%s, len: %d, data: %*.*s\n", __func__, len, len, len, (char *) s->connection->buffer->pos);
+    fflush(stdout);
+
+    str.len = (len >= 4 ? 4 : len);
     str.data = ngx_pnalloc(s->connection->pool, str.len);
     if (str.data == NULL) {
         return NGX_ERROR;
     }
 
-    int len = 0;
-    if (data == 1) {
-        len = s->received;
-    } else {
-        len = s->connection->sent;
-    }
-
-#if 0
-    printf("data: %*.*s\n", len, len, (char *) s->connection->buffer->pos);
-    fflush(stdout);
-#endif
-
-    if (len >= 4) {
-        ngx_memcpy(str.data, s->connection->buffer->pos, str.len);
-    } else {
-        ngx_memcpy(str.data, null, str.len);
-    }
+    ngx_memcpy(str.data, s->connection->buffer->pos, str.len);
 
     v->len = str.len;
     v->valid = 1;
