@@ -1,4 +1,4 @@
-1) 将stream.conf复制到nginx的conf目录下, 将nginx.conf中的内容追加到系统的nginx配置文件中, 重新加载nginx配置文件
+1) 将stream.conf复制到nginx的conf目录下, 将nginx.conf中内容追加到nginx的conf/nginx.conf, 重新加载nginx配置文件
 2) 启动udp echo server 
 # ./udpechoserver.py '' 19999
 # ./udpechoserver.py '' 29999
