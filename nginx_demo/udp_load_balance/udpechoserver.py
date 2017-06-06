@@ -7,7 +7,7 @@ if len(sys.argv) != 3:
     print "usage: udpechoserver02.py <hostname> <service>"
     sys.exit(1)
 
-host = sys.argv[1]                               # Bind to all interfaces
+host = sys.argv[1]
 port = int(sys.argv[2])
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
