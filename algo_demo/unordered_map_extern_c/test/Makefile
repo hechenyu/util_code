@@ -2,9 +2,9 @@
 
 RM = rm -f
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -std=c99
 INCLUDE = -I../lib
-LDFLAGS = 
+LDFLAGS = ../lib/libalgo.a -lstdc++
 LDPATH = 
 
 PROGS =	test

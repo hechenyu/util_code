@@ -10,7 +10,12 @@ inline
 int default_equal_func(const unordered_map_key_t *key1, const unordered_map_key_t *key2)
 {
     size_t len = std::min(key1->len, key2->len);
-    return memcmp(key1->key, key2->key, len) == 0 && key1->len == key2->len;
+    auto ret = memcmp(key1->key, key2->key, len) == 0 && key1->len == key2->len;
+    printf("%s, key1: %*.*s, len1: %d, key2: %*.*s, len2: %d, ret: %d\n", __func__, 
+            (int) key1->len, (int) key1->len, (char *) key1->key, (int) key1->len,
+            (int) key2->len, (int) key2->len, (char *) key2->key, (int) key2->len,
+            (int) ret);
+    return ret;
 }
 
 struct key_equal {
@@ -61,7 +66,7 @@ void unordered_map_destroy(unordered_map_t *map)
     delete map;
 }
 
-int unordered_map_insert(unordered_map_t *map, unordered_map_key_t *key, unordered_map_value_t *val)
+int unordered_map_insert(unordered_map_t *map, unordered_map_key_t *key, unordered_map_value_t val)
 {
     auto ret = map->map.emplace(*key, val);
     return !ret.second;
