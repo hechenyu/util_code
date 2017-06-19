@@ -10,23 +10,18 @@ inline
 int default_equal_func(const unordered_map_key_t *key1, const unordered_map_key_t *key2)
 {
     size_t len = std::min(key1->len, key2->len);
-    auto ret = memcmp(key1->key, key2->key, len) == 0 && key1->len == key2->len;
-    printf("%s, key1: %*.*s, len1: %d, key2: %*.*s, len2: %d, ret: %d\n", __func__, 
-            (int) key1->len, (int) key1->len, (char *) key1->key, (int) key1->len,
-            (int) key2->len, (int) key2->len, (char *) key2->key, (int) key2->len,
-            (int) ret);
-    return ret;
+    return memcmp(key1->key, key2->key, len) == 0 && key1->len == key2->len;
 }
 
 struct key_equal {
-    equal_func *comp;
+    equal_func *equal_to;
 
-    key_equal(): comp(default_equal_func) {}
-    key_equal(equal_func *f): comp(f) {}
+    key_equal(): equal_to(default_equal_func) {}
+    key_equal(equal_func *f): equal_to(f) {}
 
     bool operator ()(const unordered_map_key_t &key1, const unordered_map_key_t &key2) const
     {
-        return comp(&key1, &key2) == 0;
+        return equal_to(&key1, &key2);
     }
 };
 
@@ -66,32 +61,29 @@ void unordered_map_destroy(unordered_map_t *map)
     delete map;
 }
 
-int unordered_map_insert(unordered_map_t *map, unordered_map_key_t *key, unordered_map_value_t val)
+int unordered_map_insert(unordered_map_t *map, const unordered_map_key_t *key, unordered_map_value_t val)
 {
     auto ret = map->map.emplace(*key, val);
-    return !ret.second;
+    return ret.second;
 }
 
-unordered_map_value_t unordered_map_find(unordered_map_t *map, unordered_map_key_t *key)
+int unordered_map_find(unordered_map_t *map, const unordered_map_key_t *key, unordered_map_value_t *val)
 {
     auto iter = map->map.find(*key);
     if (iter == map->map.end()) {
-        return NULL;
+        return 0;
     }
 
-    return iter->second;
+    if (val) {
+        *val = iter->second;
+    }
+
+    return 1;
 }
 
-unordered_map_value_t unordered_map_delete(unordered_map_t *map, unordered_map_key_t *key)
+int unordered_map_delete(unordered_map_t *map, const unordered_map_key_t *key)
 {
-    auto iter = map->map.find(*key);
-    if (iter == map->map.end()) {
-        return NULL;
-    }
-
-    auto ret = iter->second;
-    map->map.erase(iter);
-    return ret;
+    return map->map.erase(*key);
 }
 
 void unordered_map_foreach(unordered_map_t *map, foreach_func *func)

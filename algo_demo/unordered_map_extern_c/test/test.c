@@ -8,6 +8,12 @@ void print_key_value(const unordered_map_key_t *key, unordered_map_value_t val)
     printf("%*.*s: %d\n", (int) key->len, (int) key->len, (char *) key->key, *(int *) val);
 }
 
+void free_key_value(const unordered_map_key_t *key, unordered_map_value_t val)
+{
+    free((void *) key->key);
+    free(val);
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
@@ -43,19 +49,36 @@ int main(int argc, char *argv[])
                     word[end - start] = '\0'; // And terminate it.
                     key.key = word;
                     key.len = end - start;
-                    if ((val = unordered_map_find(map, &key)) == NULL) {
+                    if (unordered_map_find(map, &key, &val)) {
+                        *(int *) val += 1;
+                    } else {
                         val = malloc(sizeof(int));
                         *(int *) val = 1;
                         unordered_map_insert(map, &key, val);
-                    } else {
-                        *(int *) val += 1;
                     }
                 }
             start = end + 1; // Next strpbrk call starts with
         } // the character after this separator.
     }
 
+#ifdef TEST_DELETE
+    fprintf(stderr, "entry an word to delete: ");
+    if (fgets(buf, sizeof(buf), stdin) != NULL) {
+        buf[strlen(buf)-1] = '\0';
+        key.key = buf;
+        key.len = strlen(buf);
+        if (unordered_map_delete(map, &key, free_key_value)) {  // 内存泄漏
+            fprintf(stderr, "delete %*.*s ok!\n", (int) key.len, (int) key.len, (char *) key.key);
+        } else {
+            fprintf(stderr, "%*.*s nofound!\n", (int) key.len, (int) key.len, (char *) key.key);
+        }
+    }
+#endif
+
     unordered_map_foreach(map, print_key_value);
+
+    unordered_map_foreach(map, free_key_value);
+    unordered_map_destroy(map);
 
     fclose(file);
 

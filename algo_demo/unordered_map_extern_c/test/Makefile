@@ -2,7 +2,7 @@
 
 RM = rm -f
 CC = gcc
-CFLAGS = -Wall -g -std=c99
+CFLAGS = -Wall -g -std=c99 -DTEST_DELETE
 INCLUDE = -I../lib
 LDFLAGS = ../lib/libalgo.a -lstdc++
 LDPATH = 

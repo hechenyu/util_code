@@ -17,7 +17,7 @@ typedef void *unordered_map_value_t;    // value的内存由调用者维护
 extern "C" {
 #endif
 
-// 如果两个key相等, 返回0, 其他返回非0
+// 如果两个key相等, 返回1, 其他返回0
 typedef int equal_func(const unordered_map_key_t *, const unordered_map_key_t *);
 
 typedef size_t hash_func(const unordered_map_key_t *);
@@ -29,17 +29,18 @@ unordered_map_t *unordered_map_create(size_t n);
 void unordered_map_destroy(unordered_map_t *map);
 
 // 向hash表里插入一项
-// 如果成功, 返回0,
-// 如果已经存在相同key的项, 返回非0
-int unordered_map_insert(unordered_map_t *map, unordered_map_key_t *key, unordered_map_value_t val);
+// 如果成功, 返回1,
+// 如果已经存在相同key的项, 返回0
+int unordered_map_insert(unordered_map_t *map, const unordered_map_key_t *key, unordered_map_value_t val);
 
 // 从hash表里查找一项
-// 如果没有符合的项, 返回NULL
-unordered_map_value_t unordered_map_find(unordered_map_t *map, unordered_map_key_t *key);
+// 如果找到符合的项, 返回1,
+// 如果没有符合的项, 返回0
+int unordered_map_find(unordered_map_t *map, const unordered_map_key_t *key, unordered_map_value_t *val);
 
 // 从hash表里删除一项
-// 如果没有符合的项, 返回NULL
-unordered_map_value_t unordered_map_delete(unordered_map_t *map, unordered_map_key_t *key);
+// 返回被删除的项的个数
+int unordered_map_delete(unordered_map_t *map, const unordered_map_key_t *key);
 
 // 遍历hash表中的每一项,
 // 并对每一项调用foreach_func
