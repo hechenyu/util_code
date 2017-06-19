@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -I../lib -g -O2 -D_REENTRANT -Wall
+CXXFLAGS = -std=c++11 -g -O2 -D_REENTRANT -Wall
 RANLIB = ranlib
 
 # Following is the main library, built from all the object files
