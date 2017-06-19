@@ -41,6 +41,11 @@ unordered_map_value_t unordered_map_find(unordered_map_t *map, unordered_map_key
 // 如果没有符合的项, 返回NULL
 unordered_map_value_t unordered_map_delete(unordered_map_t *map, unordered_map_key_t *key);
 
+// 遍历hash表中的每一项,
+// 并对每一项调用foreach_func
+typedef void foreach_func(const unordered_map_key_t *, unordered_map_value_t);
+void unordered_map_foreach(unordered_map_t *map, foreach_func *func);
+
 #ifdef __cplusplus
 }   // extern "C" {
 #endif

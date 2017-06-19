@@ -89,3 +89,10 @@ unordered_map_value_t unordered_map_delete(unordered_map_t *map, unordered_map_k
     return ret;
 }
 
+void unordered_map_foreach(unordered_map_t *map, foreach_func *func)
+{
+    for (auto &item : map->map) {
+        func(&item.first, item.second);
+    }
+}
+
