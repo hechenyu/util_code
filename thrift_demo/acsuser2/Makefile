@@ -12,7 +12,7 @@ LDPATH = -L/usr/local/lib
 
 OBJS = acsuser_constants.o acsuser_types.o UserService.o
 
-PROGS = UserClient UserServer 
+PROGS = UserClient UserServer UserAdd UserAdd2
 
 .PHONY: all
 all: $(PROGS)
@@ -43,5 +43,11 @@ UserClient: UserClient.o $(OBJS)
 
 UserServer: UserServer.o $(OBJS)
 	@$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
+
+UserAdd: UserAdd.o $(OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
+
+UserAdd2: UserAdd2.o $(OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(LDPATH)
 
 

@@ -25,6 +25,17 @@ public:
 	}  
 
 	void add(const User& u) {  
+        printf("%s\n", __func__);
+		// Your implementation goes here  
+        if (u.__isset.details) {
+		    printf("uid=%s uname=%s usex=%d uage=%d details=%s\n", u.uid.c_str(), u.uname.c_str(), u.usex, u.uage, u.details.c_str());  
+        } else {
+		    printf("uid=%s uname=%s usex=%d uage=%d nodetails\n", u.uid.c_str(), u.uname.c_str(), u.usex, u.uage);  
+        }
+	}  
+
+	void add_v2(const User& u) {  
+        printf("%s\n", __func__);
 		// Your implementation goes here  
         if (u.__isset.details) {
 		    printf("uid=%s uname=%s usex=%d uage=%d details=%s\n", u.uid.c_str(), u.uname.c_str(), u.usex, u.uage, u.details.c_str());  
@@ -34,6 +45,7 @@ public:
 	}  
 
 	void get(User& _return, const UserQuery &qry) {  
+        printf("%s\n", __func__);
         printf("qry.uid=%s\n", qry.uid.c_str());
 		// Your implementation goes here  
 		_return.uid = "leo1";  
